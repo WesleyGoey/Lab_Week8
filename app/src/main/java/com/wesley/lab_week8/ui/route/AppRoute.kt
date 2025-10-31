@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.datastore.preferences.protobuf.LazyStringList
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -69,16 +70,6 @@ fun AppRoute() {
             navController = navController,
             startDestination = AppView.HomeView.name
         ) {
-//            composable(route = AppView.MovieList.name) {
-//                MovieListView(navController = navController)
-//            }
-//
-//            composable(route = AppView.MovieDetail.name + "/{title}") { backStackEntry ->
-//                MovieDetailView(
-//                    title = backStackEntry.arguments?.getString("title")!!
-//                )
-//            }
-
             composable(route = AppView.HomeView.name) {
                 HomeView()
             }

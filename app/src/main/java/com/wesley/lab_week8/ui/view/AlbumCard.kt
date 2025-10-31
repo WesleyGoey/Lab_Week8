@@ -49,7 +49,7 @@ fun AlbumCard(
             .width(160.dp)
             .height(220.dp)
             .clickable(
-                onClick = { onClick }
+                onClick = { onClick() }
             ),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -124,9 +124,9 @@ fun AlbumCard(
 @Composable
 private fun AlbumCardPreview() {
     AlbumCard(
-        name = "Sob Rock",
-        releasedDate = "2021",
-        genre = "Indie",
+        name = "My Worlds",
+        releasedDate = "2010",
+        genre = "Pop",
         cover = ""
     )
 }
