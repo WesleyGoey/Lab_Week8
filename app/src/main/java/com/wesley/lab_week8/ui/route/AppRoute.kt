@@ -83,9 +83,10 @@ fun AppRoute() {
                 HomeView()
             }
 
-//            composable(route = AppView.AlbumDetailView.name + "/{id}") { backStackEntry ->
-////                AlbumDetailView(route = AppView.AlbumDetailView.name + "/{id}")
-//            }
+            composable(route = AppView.AlbumDetailView.name + "/{id}") { backStackEntry ->
+                val albumId = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
+                AlbumDetailView(albumId = albumId)
+            }
 
             composable(route = AppView.LoadingView.name) {
                 LoadingView()

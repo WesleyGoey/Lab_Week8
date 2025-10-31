@@ -95,22 +95,22 @@ fun AlbumCard(
                     Text(
                         text = releasedDate,
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = Color(0xFFaeaa9e),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.width(3.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     Box(
                         modifier = Modifier
                             .size(3.dp)
                             .clip(RoundedCornerShape(4.dp))
-                            .background(Color.Gray)
+                            .background(Color(0xFFaeaa9e))
                     )
-                    Spacer(modifier = Modifier.width(3.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = genre,
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = Color(0xFFaeaa9e),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

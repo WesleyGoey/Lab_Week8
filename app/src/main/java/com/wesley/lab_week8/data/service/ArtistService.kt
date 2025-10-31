@@ -21,11 +21,11 @@ interface ArtistService {
 
     @GET("album.php")
     suspend fun getDetailAlbum(
-        @Query("s") albumId: Int
+        @Query("m") albumId: Int
     ): Response<ResponseDetailAlbum>
 
     @GET("track.php")
     suspend fun getTrackAlbum(
-        @Query("s") albumId: Int
+        @Query("m") albumId: Int
     ): Response<ResponseTrackAlbum>
 }
