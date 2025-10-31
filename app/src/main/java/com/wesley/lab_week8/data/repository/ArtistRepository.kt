@@ -5,6 +5,7 @@ import com.wesley.lab_week8.ui.model.Album
 import com.wesley.lab_week8.ui.model.Artist
 import com.wesley.lab_week8.ui.model.Track
 import java.io.IOException
+import kotlin.collections.emptyList
 
 class ArtistRepository(private val service: ArtistService) {
     suspend fun getArtistByName(artistName: String): Artist {
@@ -22,36 +23,59 @@ class ArtistRepository(private val service: ArtistService) {
         )
     }
 
-    suspend fun getAlbumArtistByName(artistName: String): Album {
+
+    suspend fun getAlbumArtistByName(artistName: String): List<Album> {
         val albumArtist = service.getAlbumArtist(
             artistName = artistName
         ).body()!!
 
+        return albumArtist.album.map { albumData ->
+            Album(
+                idAlbum = albumData.idAlbum.toInt(),
+                idArtist = albumData.idArtist.toInt(),
+                nameAlbum = albumData.strAlbum,
+                cover = albumData.strAlbumThumb,
+                releaseDate = albumData.intYearReleased,
+                genre = albumData.strGenre,
+                description = albumData.strDescriptionEN,
+                isError = false,
+                errorMessage = null
+            )
+        }
+    }
+
+    suspend fun getDetailAlbumById(albumId: Int): Album {
+        val detailAlbum = service.getDetailAlbum(
+            albumId = albumId
+        ).body()!!
+
         return Album(
-            idAlbum = albumArtist.album[0].idAlbum.toInt(),
-            idArtist = albumArtist.album[0].idArtist.toInt(),
-            nameAlbum = albumArtist.album[0].strAlbum,
-            cover = albumArtist.album[0].strAlbumThumb,
-            releaseDate = albumArtist.album[0].intYearReleased,
-            genre = albumArtist.album[0].strGenre,
-            description = albumArtist.album[0].strDescriptionEN,
+            idAlbum = detailAlbum.album[0].idAlbum.toInt(),
+            idArtist = detailAlbum.album[0].idArtist.toInt(),
+            nameAlbum = detailAlbum.album[0].strAlbum,
+            cover = detailAlbum.album[0].strAlbumThumb,
+            releaseDate = detailAlbum.album[0].intYearReleased,
+            genre = detailAlbum.album[0].strGenre,
+            description = detailAlbum.album[0].strDescriptionEN,
             isError = false,
             errorMessage = null
         )
     }
 
-    suspend fun getTrackAlbumById(albumId: Int): Track {
+    suspend fun getTrackAlbumById(albumId: Int): List<Track> {
         val trackAlbum = service.getTrackAlbum(
             albumId = albumId
         ).body()!!
 
-        return Track(
-            idTrack = trackAlbum.track[0].idTrack.toInt(),
-            idAlbum = trackAlbum.track[0].idAlbum.toInt(),
-            nameTrack = trackAlbum.track[0].strTrack,
-            duration = trackAlbum.track[0].intDuration.toInt(),
-            isError = false,
-            errorMessage = null
-        )
+        return trackAlbum.track.map { trackData ->
+            Track(
+                idTrack = trackData.idTrack.toInt(),
+                idAlbum = trackData.idAlbum.toInt(),
+                nameTrack = trackData.strTrack,
+                duration = trackData.intDuration.toInt(),
+                isError = false,
+                errorMessage = null
+            )
+        }
     }
 }
