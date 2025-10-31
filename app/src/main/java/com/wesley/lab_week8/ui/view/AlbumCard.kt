@@ -44,7 +44,7 @@ fun AlbumCard(
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(210.dp),
+            .height(220.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF1C1C1C)
@@ -57,25 +57,18 @@ fun AlbumCard(
             modifier = Modifier.fillMaxSize()
         ) {
             // Album Cover Section
-           AsyncImage(
+            AsyncImage(
                 model = cover,
                 contentDescription = "Artist Cover",
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
+
                 contentScale = ContentScale.Crop
             )
+            Spacer(modifier = Modifier.height(4.dp))
 
-            Image(
-                painter = painterResource(id = R.drawable.johnmayer),
-                contentDescription = "Album Cover",
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .size(160.dp)
-                    .clip(
-                        RoundedCornerShape(12.dp)
-                    )
-            )
-
-            // Album Info Section
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -93,7 +86,7 @@ fun AlbumCard(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
                         text = releasedDate,
                         fontSize = 12.sp,

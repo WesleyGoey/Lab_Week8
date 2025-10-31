@@ -28,16 +28,15 @@ class ArtistRepository(private val service: ArtistService) {
         val albumArtist = service.getAlbumArtist(
             artistName = artistName
         ).body()!!
-
         return albumArtist.album.map { albumData ->
             Album(
                 idAlbum = albumData.idAlbum.toInt(),
                 idArtist = albumData.idArtist.toInt(),
                 nameAlbum = albumData.strAlbum,
-                cover = albumData.strAlbumThumb,
-                releaseDate = albumData.intYearReleased,
-                genre = albumData.strGenre,
-                description = albumData.strDescriptionEN,
+                cover = albumData.strAlbumThumb ?: "",
+                releaseDate = albumData.intYearReleased ?: "",
+                genre = albumData.strGenre ?: "",
+                description = albumData.strDescriptionEN ?: "",
                 isError = false,
                 errorMessage = null
             )

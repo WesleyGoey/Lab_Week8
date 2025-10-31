@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -91,11 +92,10 @@ fun HomeView(
         ) {
             items(listAlbum) { album ->
                 AlbumCard(
-                    name = album.name,
-                    releasedDate = album.releasedDate,
+                    name = album.nameAlbum,
+                    releasedDate = album.releaseDate,
                     genre = album.genre,
-                    cover = rememberAsyncImagePainter(album.cover),
-                    modifier = Modifier.fillMaxWidth()
+                    cover = album.cover
                 )
             }
         }
