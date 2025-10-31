@@ -29,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.wesley.lab_week8.ui.view.AlbumDetailView
+import com.wesley.lab_week8.ui.view.ErrorView
 import com.wesley.lab_week8.ui.view.HomeView
 import com.wesley.lab_week8.ui.view.LoadingView
 
@@ -38,7 +39,8 @@ enum class AppView(
 ) {
     HomeView("Home"),
     AlbumDetailView("Album Detail"),
-    LoadingView("Loading")
+    LoadingView("Loading"),
+    ErrorView("Error")
 }
 
 
@@ -81,12 +83,16 @@ fun AppRoute() {
                 HomeView()
             }
 
-            composable(route = AppView.AlbumDetailView.name) {
-                AlbumDetailView()
-            }
+//            composable(route = AppView.AlbumDetailView.name + "/{id}") { backStackEntry ->
+////                AlbumDetailView(route = AppView.AlbumDetailView.name + "/{id}")
+//            }
 
             composable(route = AppView.LoadingView.name) {
                 LoadingView()
+            }
+
+            composable(route = AppView.ErrorView.name) {
+                ErrorView()
             }
         }
     }

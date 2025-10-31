@@ -2,6 +2,7 @@ package com.wesley.lab_week8.ui.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,12 +41,16 @@ fun AlbumCard(
     name: String,
     releasedDate: String,
     genre: String,
-    cover: String
+    cover: String,
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(220.dp),
+            .height(220.dp)
+            .clickable(
+                onClick = { onClick }
+            ),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF1C1C1C)
@@ -56,7 +62,6 @@ fun AlbumCard(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Album Cover Section
             AsyncImage(
                 model = cover,
                 contentDescription = "Artist Cover",
