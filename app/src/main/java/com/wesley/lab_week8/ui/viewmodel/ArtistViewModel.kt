@@ -26,10 +26,14 @@ class ArtistViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    init {
+        loadArtist("Justin Bieber")
+    }
+
     fun loadArtist(artistName: String) {
         if (artistName.isBlank()) {
             _artist.value = _artist.value.copy(
-                isError = true, errorMessage = "Error. Tidak ada koneksi internet"
+                isError = true, errorMessage = "Error. Tidak ada koneksi internet."
             )
             _listAlbum.value = emptyList()
             _listTrack.value = emptyList()
@@ -42,6 +46,7 @@ class ArtistViewModel : ViewModel() {
                 _artist.value = artistData.copy(
                     isError = false, errorMessage = null
                 )
+                loadAlbum(artistName)
             } catch (e: Exception) {
                 _artist.value = _artist.value.copy(
                     isError = true, errorMessage = "Error. Tidak ada koneksi internet."

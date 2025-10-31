@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.wesley.lab_week8.R
 
@@ -56,15 +57,12 @@ fun AlbumCard(
             modifier = Modifier.fillMaxSize()
         ) {
             // Album Cover Section
-//            Image(
-//                painter = rememberAsyncImagePainter(
-//                    model = "https://openweathermap.org/img/wn/$cover.png"
-//                ),
-//                contentDescription = "Album Cover",
-//                modifier = modifier
-//                    .size(160.dp)
-//                    .clip(RoundedCornerShape(12.dp))
-//            )
+           AsyncImage(
+                model = cover,
+                contentDescription = "Artist Cover",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
 
             Image(
                 painter = painterResource(id = R.drawable.johnmayer),

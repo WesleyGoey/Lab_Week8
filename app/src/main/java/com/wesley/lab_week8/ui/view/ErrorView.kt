@@ -1,6 +1,7 @@
 package com.wesley.lab_week8.ui.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -23,7 +24,7 @@ fun ErrorView(
             .fillMaxSize()
             .background(Color(0xFF282828)),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = "Error",
