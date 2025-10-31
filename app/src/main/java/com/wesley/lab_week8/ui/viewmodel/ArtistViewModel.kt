@@ -44,7 +44,7 @@ class ArtistViewModel : ViewModel() {
                 )
             } catch (e: Exception) {
                 _artist.value = _artist.value.copy(
-                    isError = true, errorMessage = "Error. Tidak ada koneksi internet"
+                    isError = true, errorMessage = "Error. Tidak ada koneksi internet."
                 )
             }
         }
@@ -69,7 +69,7 @@ class ArtistViewModel : ViewModel() {
             } catch (e: Exception) {
                 _detailAlbum.value = Album(
                     isError = true,
-                    errorMessage = "Error. Tidak ada koneksi internet"
+                    errorMessage = "Error. Tidak ada koneksi internet."
                 )
             }
         }
