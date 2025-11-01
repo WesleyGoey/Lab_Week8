@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.wesley.lab_week8.ui.route.AppRoute
 import com.wesley.lab_week8.ui.theme.Lab_Week8Theme
 import com.wesley.lab_week8.ui.view.HomeView
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Lab_Week8Theme {
-                HomeView()
+                AppRoute()
             }
         }
     }

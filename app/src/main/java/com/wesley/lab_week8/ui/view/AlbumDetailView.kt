@@ -49,124 +49,134 @@ fun AlbumDetailView(
     val artist by viewModel.artist.collectAsState()
     val detailAlbum by viewModel.detailAlbum.collectAsState()
     val listTrack by viewModel.listTrack.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color(0xFF282828))
-            .padding(16.dp)
-    ) {
-        item {
-            Column(
+    when {
+        isLoading -> LoadingView()
+        artist.isError -> ErrorView()
+        else -> {
+            LazyColumn(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(color = Color(0xFF1c2021))
-                    .border(
-                        width = 2.dp,
-                        color = Color(0xFF404241),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(12.dp)
+                    .fillMaxSize()
+                    .background(Color(0xFF282828))
+                    .padding(16.dp)
             ) {
-                AsyncImage(
-                    model = detailAlbum.cover,
-                    contentDescription = "Artist Cover",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .clip(RoundedCornerShape(12.dp)),
-                )
-                Spacer(modifier = modifier.height(10.dp))
-                Text(
-                    text = detailAlbum.nameAlbum,
-                    color = Color(0xFFaeaa9e),
-                    fontSize = 22.sp,
-                )
-                Spacer(modifier = modifier.height(10.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = detailAlbum.releasedDate,
-                        fontSize = 14.sp,
-                        color = Color(0xFFaeaa9e),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Box(
-                        modifier = Modifier
-                            .size(3.dp)
-                            .clip(RoundedCornerShape(4.dp))
-                            .background(Color(0xFFaeaa9e))
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = detailAlbum.genre,
-                        fontSize = 14.sp,
-                        color = Color(0xFFaeaa9e),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                Spacer(modifier = modifier.height(10.dp))
-                Text(
-                    text = detailAlbum.description,
-                    color = Color(0xFFaeaa9e),
-                    fontSize = 14.sp,
-                )
-            }
-            Spacer(modifier = modifier.height(20.dp))
-            Text(
-                text = "Tracks",
-                color = Color(0xFFF5C242),
-                fontSize = 20.sp
-            )
-            Spacer(modifier = modifier.height(10.dp))
-            listTrack.forEachIndexed { index, track ->
-                Column {
-                    Row(
+                item {
+                    Column(
                         modifier = modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp, horizontal = 0.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(color = Color(0xFF1c2021))
+                            .border(
+                                width = 2.dp,
+                                color = Color(0xFF404241),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(12.dp)
                     ) {
-                        Box(
+                        AsyncImage(
+                            model = detailAlbum.cover,
+                            contentDescription = "Artist Cover",
                             modifier = Modifier
-                                .size(32.dp)
-                                .background(Color(0xFF3A3427), shape = RoundedCornerShape(8.dp)),
-                            contentAlignment = Alignment.Center
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                                .clip(RoundedCornerShape(12.dp)),
+                        )
+                        Spacer(modifier = modifier.height(10.dp))
+                        Text(
+                            text = detailAlbum.nameAlbum,
+                            color = Color(0xFFaeaa9e),
+                            fontSize = 22.sp,
+                        )
+                        Spacer(modifier = modifier.height(10.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "${index + 1}",
-                                color = Color(0xFFF5C242),
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
+                                text = detailAlbum.releasedDate,
+                                fontSize = 14.sp,
+                                color = Color(0xFFaeaa9e),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Box(
+                                modifier = Modifier
+                                    .size(3.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(Color(0xFFaeaa9e))
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = detailAlbum.genre,
+                                fontSize = 14.sp,
+                                color = Color(0xFFaeaa9e),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = modifier.height(10.dp))
                         Text(
-                            text = track.nameTrack,
-                            color = Color(0xFFaeaa9e),
-                            fontSize = 16.sp,
-                            modifier = Modifier.weight(1f),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        // Duration
-                        Text(
-                            text = viewModel.formatDuration(track.duration),
+                            text = detailAlbum.description,
                             color = Color(0xFFaeaa9e),
                             fontSize = 14.sp,
-                            modifier = Modifier.padding(start = 8.dp)
                         )
                     }
-                    Divider(
-                        color = Color(0xFF3A3427),
-                        thickness = 1.dp
+                    Spacer(modifier = modifier.height(20.dp))
+                    Text(
+                        text = "Tracks",
+                        color = Color(0xFFF5C242),
+                        fontSize = 20.sp
                     )
-                    Spacer(modifier = modifier.height(4.dp))
+                    Spacer(modifier = modifier.height(10.dp))
+                    listTrack.forEachIndexed { index, track ->
+                        Column {
+                            Row(
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp, horizontal = 0.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                        .background(
+                                            Color(0xFF3A3427),
+                                            shape = RoundedCornerShape(8.dp)
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "${index + 1}",
+                                        color = Color(0xFFF5C242),
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Text(
+                                    text = track.nameTrack,
+                                    color = Color(0xFFaeaa9e),
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.weight(1f),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                // Duration
+                                Text(
+                                    text = viewModel.formatDuration(track.duration),
+                                    color = Color(0xFFaeaa9e),
+                                    fontSize = 14.sp,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+                            Divider(
+                                color = Color(0xFF3A3427),
+                                thickness = 1.dp
+                            )
+                            Spacer(modifier = modifier.height(4.dp))
+                        }
+                    }
                 }
             }
         }

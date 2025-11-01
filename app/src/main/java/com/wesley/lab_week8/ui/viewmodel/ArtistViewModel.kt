@@ -23,8 +23,8 @@ class ArtistViewModel : ViewModel() {
     private val _listTrack = MutableStateFlow<List<Track>>(emptyList())
     val listTrack: StateFlow<List<Track>> = _listTrack.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     init {
         loadArtist("Justin Bieber")
@@ -39,8 +39,9 @@ class ArtistViewModel : ViewModel() {
             _listTrack.value = emptyList()
             return
         }
-
+        _isLoading.value = true
         viewModelScope.launch {
+            _isLoading.value = false
             try {
                 val artistData = ArtistContainer().artistRepository.getArtistByName(artistName)
                 _artist.value = artistData.copy(
@@ -56,7 +57,9 @@ class ArtistViewModel : ViewModel() {
     }
 
     fun loadAlbum(artistName: String) {
+        _isLoading.value = true
         viewModelScope.launch {
+            _isLoading.value = false
             try {
                 val albumData = ArtistContainer().artistRepository.getAlbumArtistByName(artistName)
                 _listAlbum.value = albumData
@@ -67,7 +70,9 @@ class ArtistViewModel : ViewModel() {
     }
 
     fun loadDetailAlbum(albumId: Int) {
+        _isLoading.value = true
         viewModelScope.launch {
+            _isLoading.value = false
             try {
                 val detailAlbumData = ArtistContainer().artistRepository.getDetailAlbumById(albumId)
                 _detailAlbum.value = detailAlbumData
@@ -81,7 +86,9 @@ class ArtistViewModel : ViewModel() {
     }
 
     fun loadTrack(albumId: Int) {
+        _isLoading.value = true
         viewModelScope.launch {
+            _isLoading.value = false
             try {
                 val trackData = ArtistContainer().artistRepository.getTrackAlbumById(albumId)
                 _listTrack.value = trackData
