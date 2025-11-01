@@ -1,36 +1,18 @@
 package com.wesley.lab_week8.ui.route
 
-import android.icu.util.Currency
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.datastore.preferences.protobuf.LazyStringList
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -47,7 +29,7 @@ enum class AppView(
 ) {
     HomeView("Home"),
     AlbumDetailView("Album Detail"),
-    LoadingView("Loading"),
+    LoadingView("Loading..."),
     ErrorView("Error")
 }
 
@@ -61,7 +43,9 @@ fun AppRoute() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val currentRoute = currentDestination?.route
-    val currentView = AppView.entries.find { it.name == currentRoute }
+    val baseRoute = currentRoute?.substringBefore('/')
+    val currentView = baseRoute?.let { name -> AppView.entries.find { it.name == name } }
+    val artistViewModel: ArtistViewModel = viewModel()
 
     Scaffold(
         topBar = {
@@ -83,7 +67,8 @@ fun AppRoute() {
 
             composable(route = AppView.AlbumDetailView.name + "/{id}") { backStackEntry ->
                 val albumId = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
-                AlbumDetailView(albumId = albumId)
+                AlbumDetailView(albumId = albumId,
+                    viewModel = artistViewModel)
             }
 
             composable(route = AppView.LoadingView.name) {
@@ -107,9 +92,8 @@ fun MyTopAppBar(
     val detailAlbum by viewModel.detailAlbum.collectAsState()
 
     val title = when (currentView) {
-        AppView.HomeView -> artist.nameArtist.takeIf { it.isNotBlank() } ?: currentView.title
-        AppView.AlbumDetailView -> detailAlbum.nameAlbum.takeIf { it.isNotBlank() } ?: currentView.title
-        AppView.LoadingView -> "Loading..."
+        AppView.HomeView -> if (artist.nameArtist.isNotBlank()) artist.nameArtist else AppView.LoadingView.title
+        AppView.AlbumDetailView -> if (detailAlbum.nameAlbum.isNotBlank()) detailAlbum.nameAlbum else AppView.LoadingView.title
         AppView.ErrorView -> "Error"
         else -> "Page Not Found"
     }
