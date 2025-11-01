@@ -44,11 +44,8 @@ fun AppRoute() {
     val currentDestination = navBackStackEntry?.destination
     val currentRoute = currentDestination?.route
     val artistViewModel: ArtistViewModel = viewModel()
-    val currentView = currentRoute
-        ?.let { route -> AppView.entries.find { entry -> route.startsWith(entry.name) } }
-        ?: run {
-            if (navBackStackEntry?.arguments?.containsKey("id") == true) AppView.AlbumDetailView else null
-        }
+    val baseRoute = currentRoute?.substringBefore('/')
+    val currentView = baseRoute?.let { name -> AppView.entries.find { it.name == name } }
 
     Scaffold(
         topBar = {
@@ -94,10 +91,10 @@ fun MyTopAppBar(
     val artist by viewModel.artist.collectAsState()
     val detailAlbum by viewModel.detailAlbum.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    val title = if (isLoading) {
-        AppView.LoadingView.title
-    } else {
-        when (currentView) {
+    val title = when {
+        isLoading -> AppView.LoadingView.title
+        artist.isError || detailAlbum.isError -> AppView.ErrorView.title
+        else -> when (currentView) {
             AppView.HomeView -> artist.nameArtist
             AppView.AlbumDetailView -> detailAlbum.nameAlbum
             AppView.ErrorView -> AppView.ErrorView.title

@@ -31,7 +31,7 @@ fun ErrorView(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Error",
+            text = "Error. Tidak ada koneksi internet.",
             color = Color(0xFF975d5b),
             fontSize = 18.sp,
         )
