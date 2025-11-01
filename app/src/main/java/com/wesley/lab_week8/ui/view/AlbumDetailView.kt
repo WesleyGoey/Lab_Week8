@@ -53,7 +53,7 @@ fun AlbumDetailView(
 
     when {
         isLoading -> LoadingView()
-        artist.isError -> ErrorView()
+        detailAlbum.isError -> ErrorView()
         else -> {
             LazyColumn(
                 modifier = modifier

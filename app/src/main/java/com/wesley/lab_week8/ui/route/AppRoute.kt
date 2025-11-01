@@ -43,15 +43,18 @@ fun AppRoute() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val currentRoute = currentDestination?.route
-    val baseRoute = currentRoute?.substringBefore('/')
-    val currentView = baseRoute?.let { name -> AppView.entries.find { it.name == name } }
     val artistViewModel: ArtistViewModel = viewModel()
+    val currentView = currentRoute
+        ?.let { route -> AppView.entries.find { entry -> route.startsWith(entry.name) } }
+        ?: run {
+            if (navBackStackEntry?.arguments?.containsKey("id") == true) AppView.AlbumDetailView else null
+        }
 
     Scaffold(
         topBar = {
             MyTopAppBar(
                 currentView = currentView,
-                viewModel = viewModel(modelClass = ArtistViewModel::class.java)
+                viewModel = artistViewModel
             )
         },
     ) { innerPadding ->
@@ -62,7 +65,7 @@ fun AppRoute() {
             startDestination = AppView.HomeView.name
         ) {
             composable(route = AppView.HomeView.name) {
-                HomeView(navController = navController)
+                HomeView(navController = navController, viewModel = artistViewModel)
             }
 
             composable(route = AppView.AlbumDetailView.name + "/{id}") { backStackEntry ->
@@ -90,12 +93,16 @@ fun MyTopAppBar(
 ) {
     val artist by viewModel.artist.collectAsState()
     val detailAlbum by viewModel.detailAlbum.collectAsState()
-
-    val title = when (currentView) {
-        AppView.HomeView -> if (artist.nameArtist.isNotBlank()) artist.nameArtist else AppView.LoadingView.title
-        AppView.AlbumDetailView -> if (detailAlbum.nameAlbum.isNotBlank()) detailAlbum.nameAlbum else AppView.LoadingView.title
-        AppView.ErrorView -> "Error"
-        else -> "Page Not Found"
+    val isLoading by viewModel.isLoading.collectAsState()
+    val title = if (isLoading) {
+        AppView.LoadingView.title
+    } else {
+        when (currentView) {
+            AppView.HomeView -> artist.nameArtist
+            AppView.AlbumDetailView -> detailAlbum.nameAlbum
+            AppView.ErrorView -> AppView.ErrorView.title
+            else -> ""
+        }
     }
 
     CenterAlignedTopAppBar(
