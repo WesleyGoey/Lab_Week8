@@ -113,6 +113,7 @@ fun MyTopAppBar(
         AppView.ErrorView -> "Error"
         else -> "Page Not Found"
     }
+
     CenterAlignedTopAppBar(
         title = { Text(text = title, color = Color(0xFFaeaa9e)) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -120,44 +121,3 @@ fun MyTopAppBar(
         )
     )
 }
-//fun MyTopAppBar(
-//    currentView: com.wesley.lab_week6.ui.route.Soal1.AppView?,
-//    canNavigateBack: Boolean,
-//    navigateUp: () -> Unit,
-//    modifier: Modifier = Modifier
-//) {
-//    if(currentView == com.wesley.lab_week6.ui.route.Soal1.AppView.PandamartView){
-//        CenterAlignedTopAppBar(
-//            title = {
-//                Text(text = currentView?.title ?: com.wesley.lab_week6.ui.route.Soal1.AppView.PandamartView.title)
-//            },
-//            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-//                containerColor = Color(0xFFBE438E),
-//                titleContentColor = Color.White
-//            ),
-//            modifier = modifier,
-//            navigationIcon = {
-//                if (canNavigateBack) {
-//                    IconButton(onClick = navigateUp) {
-//                        Icon(
-//                            imageVector = Icons.Default.ArrowBackIos,
-//                            contentDescription = "Back",
-//                            tint = Color.White
-//                        )
-//                    }
-//                }
-//            },
-//            actions = {
-//                if (canNavigateBack) {
-//                    IconButton(onClick = navigateUp) {
-//                        Icon(
-//                            imageVector = Icons.Default.ShoppingCart,
-//                            contentDescription = "Back",
-//                            tint = Color.White
-//                        )
-//                    }
-//                }
-//            }
-//        )
-//    }
-//}

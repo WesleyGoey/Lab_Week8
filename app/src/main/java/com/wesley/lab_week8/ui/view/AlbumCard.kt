@@ -47,7 +47,7 @@ fun AlbumCard(
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(220.dp)
+            .height(230.dp)
             .clickable(
                 onClick = { onClick() }
             ),
