@@ -23,7 +23,7 @@ class ArtistViewModel : ViewModel() {
     private val _listTrack = MutableStateFlow<List<Track>>(emptyList())
     val listTrack: StateFlow<List<Track>> = _listTrack.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(true)
+    private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     init {
@@ -39,9 +39,8 @@ class ArtistViewModel : ViewModel() {
             _listTrack.value = emptyList()
             return
         }
-        _isLoading.value = true
         viewModelScope.launch {
-            _isLoading.value = false
+            _isLoading.value = true
             try {
                 val artistData = ArtistContainer().artistRepository.getArtistByName(artistName)
                 _artist.value = artistData.copy(
@@ -52,27 +51,29 @@ class ArtistViewModel : ViewModel() {
                 _artist.value = _artist.value.copy(
                     isError = true, errorMessage = "Error. Tidak ada koneksi internet."
                 )
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun loadAlbum(artistName: String) {
-        _isLoading.value = true
         viewModelScope.launch {
-            _isLoading.value = false
+            _isLoading.value = true
             try {
                 val albumData = ArtistContainer().artistRepository.getAlbumArtistByName(artistName)
                 _listAlbum.value = albumData
             } catch (e: Exception) {
                 _listAlbum.value = emptyList()
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun loadDetailAlbum(albumId: Int) {
-        _isLoading.value = true
         viewModelScope.launch {
-            _isLoading.value = false
+            _isLoading.value = true
             try {
                 val detailAlbumData = ArtistContainer().artistRepository.getDetailAlbumById(albumId)
                 _detailAlbum.value = detailAlbumData
@@ -81,19 +82,22 @@ class ArtistViewModel : ViewModel() {
                     isError = true,
                     errorMessage = "Error. Tidak ada koneksi internet."
                 )
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun loadTrack(albumId: Int) {
-        _isLoading.value = true
         viewModelScope.launch {
-            _isLoading.value = false
+            _isLoading.value = true
             try {
                 val trackData = ArtistContainer().artistRepository.getTrackAlbumById(albumId)
                 _listTrack.value = trackData
             } catch (e: Exception) {
                 _listTrack.value = emptyList()
+            } finally {
+                _isLoading.value = false
             }
         }
     }

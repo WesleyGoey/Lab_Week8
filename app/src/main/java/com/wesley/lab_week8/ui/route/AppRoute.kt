@@ -78,7 +78,7 @@ fun AppRoute() {
             startDestination = AppView.HomeView.name
         ) {
             composable(route = AppView.HomeView.name) {
-                HomeView()
+                HomeView(navController = navController)
             }
 
             composable(route = AppView.AlbumDetailView.name + "/{id}") { backStackEntry ->
